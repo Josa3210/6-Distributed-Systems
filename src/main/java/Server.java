@@ -1,15 +1,43 @@
 import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.net.ServerSocket;
-import java.net.Socket;
-import java.net.SocketAddress;
+import java.time.LocalTime;
 
 public class Server {
-    public static void main(String[] args) {
+    ServerSocket serverSocket;
+
+    public Server(InetSocketAddress socketAddress) {
         try {
-            System.out.println("Trying to connect to server");
-            ServerSocket ss = new ServerSocket(4000);
-            Socket socket = ss.accept();
-            System.out.println("Succesfully connected: " + socket.getLocalSocketAddress().toString());
+            this.serverSocket = new ServerSocket(); // Create a ServerSocket
+            this.serverSocket.bind(socketAddress);  // Bind the given address to the current ServerSocket
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    // Method that opens a server on port 4000
+    public static void main(String[] args) {
+        InetSocketAddress address = new InetSocketAddress(4000);
+        Server server = new Server(address);
+        server.startServer();
+    }
+
+    public void startServer() {
+        try {
+            System.out.println("Starting the server on address: " + this.serverSocket.getLocalSocketAddress());
+            while (!this.serverSocket.isClosed() && this.serverSocket.isBound()) {
+                this.serverSocket.accept();
+                System.out.println("Succesfully connected to client");
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void stopServer() {
+        try {
+            System.out.println("Closing the server on address: " + this.serverSocket.getLocalSocketAddress());
+            this.serverSocket.close();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
