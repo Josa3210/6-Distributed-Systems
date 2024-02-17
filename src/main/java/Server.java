@@ -1,7 +1,7 @@
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
-import java.time.LocalTime;
+import java.net.Socket;
 
 public class Server {
     ServerSocket serverSocket;
@@ -26,8 +26,10 @@ public class Server {
         try {
             System.out.println("Starting the server on address: " + this.serverSocket.getLocalSocketAddress());
             while (!this.serverSocket.isClosed() && this.serverSocket.isBound()) {
-                this.serverSocket.accept();
+                Socket clientSocket = this.serverSocket.accept();
                 System.out.println("Succesfully connected to client");
+                Thread thread = new Thread(new ClientHandler(clientSocket));
+                thread.start();
             }
         } catch (IOException e) {
             throw new RuntimeException(e);

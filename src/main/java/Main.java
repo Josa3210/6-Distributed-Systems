@@ -1,4 +1,6 @@
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 
@@ -15,6 +17,12 @@ public class Main {
             // Try to connect to a socket
             socket.connect(address);
             System.out.println("Successfully connected");
+
+            BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            while (true) {
+                // Reading message sent from clientHandler
+                System.out.println(in.readLine());
+            }
 
         } catch (IOException e) {
             throw new RuntimeException(e);
