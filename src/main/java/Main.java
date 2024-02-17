@@ -1,5 +1,13 @@
+import java.io.IOException;
+import java.net.Socket;
+
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Hello World!!");
+        try {
+            Socket socket = new Socket("localhost",4000);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 }
