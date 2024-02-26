@@ -1,6 +1,7 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 
@@ -17,11 +18,17 @@ public class Main {
             // Try to connect to a socket
             socket.connect(address);
             System.out.println("Successfully connected");
+            BufferedReader userInput = new BufferedReader(new InputStreamReader(System.in));
+            BufferedReader serverOutput = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            PrintWriter serverInput = new PrintWriter(socket.getOutputStream(),true);
 
-            BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            System.out.println(serverOutput.readLine());
+            String userId = userInput.readLine();
+            serverInput.println(userId);
+
             while (true) {
                 // Reading message sent from clientHandler
-                System.out.println(in.readLine());
+                System.out.println(serverOutput.readLine());
             }
 
         } catch (IOException e) {
