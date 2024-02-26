@@ -27,7 +27,7 @@ public class Server {
             System.out.println("Starting the server on address: " + this.serverSocket.getLocalSocketAddress());
             while (!this.serverSocket.isClosed() && this.serverSocket.isBound()) {
                 Socket clientSocket = this.serverSocket.accept();
-                System.out.println("Succesfully connected to client");
+                System.out.println("Successfully connected to client");
                 Thread thread = new Thread(new ClientHandler(clientSocket));
                 thread.start();
             }

@@ -18,11 +18,16 @@ public class Main {
             // Try to connect to a socket
             socket.connect(address);
             System.out.println("Successfully connected");
+
+            // Get readers and printers in place to communicate with the server
             BufferedReader userInput = new BufferedReader(new InputStreamReader(System.in));
             BufferedReader serverOutput = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             PrintWriter serverInput = new PrintWriter(socket.getOutputStream(),true);
 
+            // Print whatever the server sends you
             System.out.println(serverOutput.readLine());
+
+            // Give your userID and send it to the server
             String userId = userInput.readLine();
             serverInput.println(userId);
 
@@ -34,8 +39,6 @@ public class Main {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
-
     }
 }
 
