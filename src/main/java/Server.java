@@ -27,7 +27,7 @@ public class Server {
             System.out.println("Starting the server on address: " + this.serverSocket.getLocalSocketAddress());
             while (!this.serverSocket.isClosed() && this.serverSocket.isBound()) {
                 this.serverSocket.accept();
-                System.out.println("Succesfully connected to client");
+                System.out.println("Successfully connected to client");
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -42,5 +42,4 @@ public class Server {
             throw new RuntimeException(e);
         }
     }
-
 }
