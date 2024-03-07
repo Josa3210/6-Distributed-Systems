@@ -16,16 +16,22 @@ public class Client {
     }
 
     public static void main(String[] args) {
-        User joeri = new User("Joeri");
-        joeri.setMoney(200);
-        Client client = new Client(joeri);
-        client.createBankAccount();
-        client.getAccount();
-        client.depositMoney(100);
-        client.depositMoney(20);
-        client.withdrawMoney(100);
-        client.withdrawMoney(50);
-        client.deleteBankAccount();
+        User user = new User("User");
+        user.setMoney(200);
+
+        Client client1 = new Client(user);
+        Client client2 = new Client(user);
+
+        client1.createBankAccount();
+        client1.getAccount();
+        client1.depositMoney(100);
+
+        client2.depositMoney(20);
+
+        client1.withdrawMoney(100);
+
+        client2.withdrawMoney(50);
+        client2.deleteBankAccount();
     }
 
     public void createBankAccount() {
