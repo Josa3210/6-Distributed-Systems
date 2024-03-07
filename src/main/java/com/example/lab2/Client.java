@@ -24,6 +24,7 @@ public class Client {
         client.depositMoney(20);
         client.withdrawMoney(100);
         client.withdrawMoney(50);
+        client.deleteBankAccount();
     }
 
     public void createBankAccount() {
@@ -46,6 +47,11 @@ public class Client {
 
     public void withdrawMoney(double amount) {
         ResponseEntity<String> response = this.restClient.post().uri(this.URIBase + "/withdrawMoney?name={name}", name).contentType(MediaType.APPLICATION_JSON).body(amount).retrieve().toEntity(String.class);
+        System.out.println(response.getBody());
+    }
+
+    public void deleteBankAccount() {
+        ResponseEntity<String> response = this.restClient.post().uri(this.URIBase + "/deleteBankAccount").contentType(MediaType.APPLICATION_JSON).body(name).retrieve().toEntity(String.class);
         System.out.println(response.getBody());
     }
 
