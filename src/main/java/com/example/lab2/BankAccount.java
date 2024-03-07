@@ -13,9 +13,11 @@ public class BankAccount {
         this.balance += amount;
     }
 
-    public void withdraw(double amount) {
+    public void withdraw(double amount) throws Exception {
         if (amount < this.balance) {
             this.balance -= amount;
+        } else {
+            throw new Exception("Not enough money");
         }
     }
 
