@@ -5,19 +5,20 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestClient;
 
 public class Client {
-    String name;
+    User user;
     String URIBase;
     RestClient restClient;
 
-    public Client(String name) {
-        this.name = name;
+    public Client(User user) {
+        this.user = user;
         this.restClient = RestClient.builder().baseUrl("http://localhost:8080").build();
         this.URIBase = "http://localhost:8080";
     }
 
     public static void main(String[] args) {
-        Client client = new Client("Joeri");
-        client.getAccount();
+        User joeri = new User("Joeri");
+        joeri.setMoney(200);
+        Client client = new Client(joeri);
         client.createBankAccount();
         client.getAccount();
         client.depositMoney(100);
@@ -28,30 +29,35 @@ public class Client {
     }
 
     public void createBankAccount() {
-        ResponseEntity<String> response = this.restClient.post().uri(this.URIBase + "/openBankAccount").contentType(MediaType.APPLICATION_JSON).body(name).retrieve().toEntity(String.class);
+        ResponseEntity<String> response = this.restClient.post().uri(this.URIBase + "/openBankAccount").body(this.user.getName()).retrieve().toEntity(String.class);
         System.out.println(response.getBody());
-        // if (result.getStatusCode() == org.springframework.http.HttpStatusCode.valueOf(200)){
-        //     System.out.println("Successfully created account");
-        // }
     }
 
     public void getAccount() {
-        ResponseEntity<String> response = this.restClient.get().uri(this.URIBase + "/getAccount?name={name}", name).retrieve().toEntity(String.class);
+        ResponseEntity<String> response = this.restClient.get().uri(this.URIBase + "/getAccount?name={name}", this.user.getName()).retrieve().toEntity(String.class);
         System.out.println(response.getBody());
     }
 
     public void depositMoney(double amount) {
-        ResponseEntity<String> response = this.restClient.post().uri(this.URIBase + "/depositMoney?name={name}", name).contentType(MediaType.APPLICATION_JSON).body(amount).retrieve().toEntity(String.class);
+        ResponseEntity<String> response = this.restClient.post().uri(this.URIBase + "/depositMoney?name={name}", this.user.getName()).contentType(MediaType.APPLICATION_JSON).body(amount).retrieve().toEntity(String.class);
+        if (response.getStatusCode().is2xxSuccessful()) {
+            this.user.setMoney(this.user.getMoney() - amount);
+        }
         System.out.println(response.getBody());
+        System.out.println("Users money " + this.user.getMoney());
     }
 
     public void withdrawMoney(double amount) {
-        ResponseEntity<String> response = this.restClient.post().uri(this.URIBase + "/withdrawMoney?name={name}", name).contentType(MediaType.APPLICATION_JSON).body(amount).retrieve().toEntity(String.class);
+        ResponseEntity<String> response = this.restClient.post().uri(this.URIBase + "/withdrawMoney?name={name}", this.user.getName()).contentType(MediaType.APPLICATION_JSON).body(amount).retrieve().toEntity(String.class);
+        if (response.getStatusCode().is2xxSuccessful()) {
+            this.user.setMoney(this.user.getMoney() + amount);
+        }
         System.out.println(response.getBody());
+        System.out.println("Users money " + this.user.getMoney());
     }
 
     public void deleteBankAccount() {
-        ResponseEntity<String> response = this.restClient.post().uri(this.URIBase + "/deleteBankAccount").contentType(MediaType.APPLICATION_JSON).body(name).retrieve().toEntity(String.class);
+        ResponseEntity<String> response = this.restClient.post().uri(this.URIBase + "/deleteBankAccount").contentType(MediaType.APPLICATION_JSON).body(this.user.getName()).retrieve().toEntity(String.class);
         System.out.println(response.getBody());
     }
 

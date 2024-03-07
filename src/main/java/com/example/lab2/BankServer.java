@@ -24,7 +24,7 @@ public class BankServer {
     String getAccountDesc(@RequestParam(value = "name") String name) {
         BankAccount acc = accounts.get(name);
 
-        if (acc == null) return "No account with such name";
+        if (acc == null) return null;
 
         return acc.toString();
     }
