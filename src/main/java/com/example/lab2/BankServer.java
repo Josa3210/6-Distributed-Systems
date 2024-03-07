@@ -41,7 +41,6 @@ public class BankServer {
     @PostMapping("/withdrawMoney")
     String withdrawMoney(@RequestParam(value = "name") String name, @RequestBody double amount) {
         BankAccount acc = accounts.get(name);
-
         if (acc == null) return "No account with such name";
 
         try {
@@ -50,5 +49,20 @@ public class BankServer {
         } catch (Exception e) {
             return "Not enough money on the account: " + acc;
         }
+    }
+
+    @PostMapping("/deleteBankAccount")
+    String deleteAccount(@RequestBody String name){
+        BankAccount acc = accounts.get(name);
+        if (acc == null) return "No account with such name";
+
+        try
+        {
+            accounts.remove(name);
+            return "Successfully removed: " + name;
+        } catch (Exception e){
+            return "Could not remove account";
+        }
+
     }
 }
