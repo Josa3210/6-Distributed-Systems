@@ -27,6 +27,7 @@ public class BankAccount {
 
     @Override
     public String toString() {
-        return String.format("BankAccount(holder: %s, balance: %s)", this.nameHolder, this.balance);
+        return String.format("BankAccount(holder: %s, balance: %s)",
+                this.nameHolder, this.balance);
     }
 }
